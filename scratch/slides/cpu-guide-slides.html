@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPU 選購指南 — 新手自組電腦 Wiki</title>
+<script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+<style>
+/* ═══════════════════════════════════════
+   DESIGN SYSTEM — Minimal Tech Dark (v3)
+   Graph Engineering: 10 Slides Full Deck
+   Font Scale: +25~35% Bigger & Clear
+═══════════════════════════════════════ */
+:root {
+  --bg:          #080c16;
+  --bg-card:     #0f172a;
+  --bg-card-2:   #1e293b;
+  --border:      rgba(255,255,255,0.08);
+  --border-hi:   rgba(96,165,250,0.4);
+  --text:        #f1f5f9;
+  --text-muted:  #94a3b8;
+  --text-dim:    #475569;
+  --accent:      #38bdf8;
+  --accent-soft: rgba(56,189,248,0.1);
+  --accent-glow: rgba(56,189,248,0.25);
+  --purple:      #a855f7;
+  --green:       #22c55e;
+  --amber:       #fbbf24;
+  --red:         #f87171;
+  --mono: 'JetBrains Mono', 'Consolas', 'Courier New', monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%; width: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 17px; /* 基礎字體放大 */
+  line-height: 1.6;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+#deck { position: relative; width: 100%; height: 100vh; }
+
+.slide {
+  position: absolute; inset: 0;
+  display: flex; flex-direction: column;
+  padding: 40px 72px 32px;
+  opacity: 0; pointer-events: none;
+  transform: translateY(16px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.slide.active {
+  opacity: 1; pointer-events: all;
+  transform: translateY(0);
+}
+.slide.exit {
+  opacity: 0; transform: translateY(-12px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+/* ── Top Bar ── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 24px; flex-shrink: 0;
+}
+.topbar-left { display: flex; align-items: center; gap: 12px; }
+.wiki-dot {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 10px var(--accent-glow);
+}
+.wiki-name {
+  font-family: var(--mono); font-size: 13px; color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+.graph-node-badge {
+  font-family: var(--mono); font-size: 11px;
+  padding: 3px 10px; border-radius: 999px;
+  background: rgba(56,189,248,0.12); color: var(--accent);
+  border: 1px solid rgba(56,189,248,0.25);
+}
+.slide-counter {
+  font-family: var(--mono); font-size: 13px; color: var(--text-muted);
+}
+
+/* ── Content Area ── */
+.content { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+
+/* ── Typography & Tags ── */
+.tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: var(--mono); font-size: 12px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 8px;
+}
+.tag::before { content: ''; display: block; width: 24px; height: 1.5px; background: var(--accent); }
+
+h1 {
+  font-size: 3.2rem; font-weight: 800; line-height: 1.12;
+  letter-spacing: -0.02em; color: #fff; margin-bottom: 12px;
+}
+h2 {
+  font-size: 2.1rem; font-weight: 700; line-height: 1.18;
+  color: #fff; margin-bottom: 20px;
+}
+.subtitle {
+  font-size: 1.15rem; color: var(--text-muted); line-height: 1.6;
+}
+
+/* ── Cards & Grids ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 24px;
+}
+.card-hi {
+  border-color: var(--border-hi);
+  background: var(--accent-soft);
+}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* ── Principle ── */
+.principle { display: flex; gap: 18px; align-items: flex-start; }
+.p-num {
+  font-family: var(--mono); font-size: 1.8rem; font-weight: 800;
+  color: var(--accent); min-width: 34px; line-height: 1;
+}
+.p-title { font-weight: 700; font-size: 1.15rem; margin-bottom: 6px; color: #fff; }
+.p-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.55; }
+
+/* ── Tables ── */
+.tbl { width: 100%; border-collapse: collapse; }
+.tbl th {
+  font-family: var(--mono); font-size: 12px; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted);
+  padding: 10px 14px; border-bottom: 1px solid var(--border); text-align: left;
+}
+.tbl td {
+  font-size: 0.96rem; padding: 12px 14px;
+  border-bottom: 1px solid var(--border); vertical-align: middle;
+}
+.tbl tr:last-child td { border-bottom: none; }
+.tbl tr:hover td { background: rgba(255,255,255,0.025); }
+
+/* ── Badges ── */
+.badge {
+  display: inline-block; font-family: var(--mono);
+  font-size: 12px; font-weight: 700; padding: 3px 9px;
+  border-radius: 5px; letter-spacing: 0.03em;
+}
+.b-blue   { background: rgba(56,189,248,0.15); color: #38bdf8; border: 1px solid rgba(56,189,248,0.3); }
+.b-red    { background: rgba(248,113,113,0.15); color: #f87171; border: 1px solid rgba(248,113,113,0.3); }
+.b-green  { background: rgba(34,197,94,0.15);  color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+.b-amber  { background: rgba(251,191,36,0.15); color: #fbbf24; border: 1px solid rgba(251,191,36,0.3); }
+.b-purple { background: rgba(168,85,247,0.15); color: #c084fc; border: 1px solid rgba(168,85,247,0.3); }
+
+/* ── Notice Callouts ── */
+.notice {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 12px 16px; border-radius: 0 8px 8px 0;
+  font-size: 0.92rem; line-height: 1.5;
+}
+.notice-warn { background: rgba(251,191,36,0.08); border-left: 3px solid var(--amber); }
+.notice-info { background: rgba(56,189,248,0.08); border-left: 3px solid var(--accent); }
+.notice-icon { flex-shrink: 0; font-size: 1.05rem; }
+
+/* ── Monospace Technical Spec ── */
+.spec-box {
+  font-family: var(--mono); font-size: 0.95rem;
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px; line-height: 1.8;
+}
+.spec-label { font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; display: block; margin-bottom: 2px; }
+
+/* ── Bottom Nav ── */
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 20px; border-top: 1px solid var(--border); flex-shrink: 0;
+}
+.nav-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--text); padding: 8px 22px; border-radius: 8px;
+  font-size: 0.88rem; cursor: pointer; font-family: var(--mono);
+  font-weight: 600; letter-spacing: 0.04em;
+  transition: all 0.2s ease;
+}
+.nav-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+.nav-btn:disabled { opacity: 0.2; cursor: not-allowed; pointer-events: none; }
+
+.dots { display: flex; gap: 7px; align-items: center; }
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--text-dim); cursor: pointer;
+  transition: all 0.25s ease;
+}
+.dot.active {
+  background: var(--accent); transform: scale(1.1);
+  box-shadow: 0 0 8px var(--accent-glow);
+  width: 22px; border-radius: 4px;
+}
+
+.progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: var(--accent); box-shadow: 0 0 10px var(--accent);
+  transition: width 0.35s ease; z-index: 10;
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" id="pbar"></div>
+
+<div id="deck">
+
+<!-- ════ SLIDE 1: 封面 ════ -->
+<div class="slide active" id="s1">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="wiki-dot"></div>
+      <span class="wiki-name">新手自組電腦 / LLMwiki</span>
+      <span class="graph-node-badge">Node: CPU (Root)</span>
+    </div>
+    <span class="slide-counter">01 / 10</span>
+  </div>
+  <div class="content" style="justify-content:center;">
+    <div class="tag">Knowledge Graph Engineering</div>
+    <h1>CPU 選購指南</h1>
+    <p class="subtitle" style="max-width:680px; margin-top:10px; font-size:1.25rem;">
+      電腦的「大腦」決定系統效能基底。看懂主流規格與定位，選對等級比盲目追求最新款更重要。
+    </p>
+    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:28px;">
+      <span class="badge b-blue" style="font-size:13px; padding:5px 14px;">Intel Core Ultra 200</span>
+      <span class="badge b-red" style="font-size:13px; padding:5px 14px;">AMD Ryzen 9000 & X3D</span>
+      <span class="badge b-purple" style="font-size:13px; padding:5px 14px;">2026 最新市況整合</span>
+      <span class="badge b-green" style="font-size:13px; padding:5px 14px;">4 篇權威評測收錄</span>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn" disabled>← PREV</button>
+    <div class="dots"></div>
+    <button class="nav-btn" onclick="go(1)">NEXT →</button>
+  </div>
+</div>
+
+<!-- ════ SLIDE 2: 選購大原則 ════ -->
+<div class="slide" id="s2">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="wiki-dot"></div>
+      <span class="wiki-name">新手自組電腦 / LLMwiki</span>
+      <span class="graph-node-badge">Node: 用途 (Decides Chain)</span>
+    </div>
+    <span class="slide-counter">02 / 10</span>
+  </div>
+  <div class="content">
+    <div class="tag">Core Principles</div>
+    <h2>選購大原則：回歸真實需求</h2>
+    <div class="grid-2">
+      <div class="card principle">
+        <div class="p-num">01</div>
+        <div>
+          <div class="p-title">有需求就買，別陷入等待循環</div>
+          <div class="p-desc">硬體一年一代，「明年」永遠有更強的新款。只要當下有工作或遊戲需求，挑選現行主流即可。</div>
+        </div>
+      </div>
+      <div class="card principle">
+        <div class="p-num">02</div>
+        <div>
+          <div class="p-title">買新不買舊（鎖定當代主流）</div>
+          <div class="p-desc">優先選新架構與新製程。不僅能耗比更好，周邊新規格（PCIe 5.0、DDR5、NPU）與售後維修更完整。</div>
+        </div>
+      </div>
+      <div class="card principle">
+        <div class="p-num">03</div>
+        <div>
+          <div class="p-title">主流熱門型號最省事</div>
+          <div class="p-desc">大眾熱銷型號（如 R5 9600X、U5 245K、7500F）貨源充足、BIOS 優化成熟，除錯求助資源最豐。</div>
+        </div>
+      </div>
+      <div class="card principle">
+        <div class="p-num">04</div>
+        <div>
+          <div class="p-title">寧可效能過剩，不要效能不足</div>
+          <div class="p-desc">電腦是自己每天在用的。預算內稍微留一點裕度，避免一開多工或換新遊戲就卡頓降頻。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn" onclick="go(-1)">← PREV</button>
+    <div class="dots"></div>
+    <button class="nav-btn" onclick="go(1)">NEXT →</button>
+  </div>
+</div>
+
+<!-- ════ SLIDE 3: 品牌比較 ════ -->
+<div class="slide" id="s3">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="wiki-dot"></div>
+      <span class="wiki-name">新手自組電腦 / LLMwiki</span>
+      <span class="graph-node-badge">Node: 品牌 (Intel vs AMD)</span>
+    </div>
+    <span class="slide-counter">03 / 10</span>
+  </div>
+  <div class="content">
+    <div class="tag">Brand Landscape 2026</div>
+    <h2>Intel vs AMD：核心定位差異</h2>
+    <div class="card" style="padding:0; overflow:hidden; margin-bottom:14px;">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th style="width:18%;">面向</th>
+            <th style="width:41%; color:#38bdf8;">🔵 Intel (Core Ultra 200)</th>
+            <th style="width:41%; color:#f87171;">🔴 AMD (Ryzen 9000 / X3D)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:700;">架構優勢</td>
+            <td><strong>P+E 混合多核</strong>：多執行緒吞吐量大，AI NPU 內建</td>
+            <td><strong>純大核 + 3D V-Cache</strong>：低延遲、能耗比頂尖</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;">強勢領域</td>
+            <td>影音剪輯（Quick Sync 硬解）、Adobe 轉檔、多工作業</td>
+            <td><strong>電競打機絕對霸王</strong>、模擬器、純粹低發熱遊戲機</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;">平台壽命</td>
+            <td>LGA1851（新 800 系列主機板）</td>
+            <td>AM5 承諾多年長效支援，未來換 CPU 不必淘汰底板</td>
+          </tr>
+          <tr>
+            <td style="font-weight:700;">超頻特性</td>
+            <td>僅限 <span class="badge b-amber">K 系列</span> 解鎖，需搭配高階 Z 系列主機板</td>
+            <td>全系列處理器皆支援超頻，B 系列主機板即可玩</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notice notice-info">
+      <span class="notice-icon">💡</span>
+      <span><strong>實務建議</strong>：剪片、繪圖及文書多工講求核心數選 Intel；以 3A 遊戲、FPS 電競高更新率為首要目標直選 AMD。</span>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn" onclick="go(-1)">← PREV</button>
+    <div class="dots"></div>
+    <button class="nav-btn" onclick="go(1)">NEXT →</button>
+  </div>
+</div>
+
+<!-- ════ SLIDE 4: 主流世代 ════ -->
+<div class="slide" id="s4">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="wiki-dot"></div>
+      <span class="wiki-name">新手自組電腦 / LLMwiki</span>
+      <span class="graph-node-badge">Node: 世代 → 腳位 (requires)</span>
+    </div>
+    <span class="slide-counter">04 / 10</span>
+  </div>
+  <div class="content">
+    <div class="tag">Generation & Sockets</div>
+    <h2>現行主流世代與腳位相容</h2>
+    <div class="grid-2">
+      <div class="card">
+        <div style="font-family:var(--mono); font-size:12px; color:var(--text-muted); margin-bottom:6px;">INTEL PLATFORM</div>
+        <div style="font-weight:700; font-size:1.25rem; color:#fff; margin-bottom:8px;">Core Ultra 200 系列</div>
+        <div style="font-size:0.92rem; color:var(--text-muted); line-height:1.75;">
+          • 腳位：<strong style="color:#fff;">LGA1851</strong>（需搭 800 系列晶片組）<br>
+          • 散熱器：與 LGA1700（12～14代）孔位完全通用<br>
+          • 特色：功耗較前代降低 20%，溫度表現更良善<br>
+          • 記憶體：純 DDR5 支援，內建 NPU AI 運算單元
+        </div>
+        <div class="notice notice-warn" style="margin-top:12px; padding:8px 12px;">
+          <span class="notice-icon">⚠️</span>
+          <span style="font-size:0.84rem;">舊款第 13/14 代高階 K 版曾有過電「縮缸」災情，若組舊款務必更新 BIOS。</span>
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-family:var(--mono); font-size:12px; color:var(--text-muted); margin-bottom:6px;">AMD PLATFORM</div>
+        <div style="font-weight:700; font-size:1.25rem; color:#fff; margin-bottom:8px;">Ryzen 9000 (Zen 5) 系列</div>
+        <div style="font-size:0.92rem; color:var(--text-muted); line-height:1.75;">
+          • 腳位：<strong style="color:#fff;">AM5</strong>（搭配 B650 / B850 / X870 底板）<br>
+          • 壽命承諾：AMD 官方長效支援，未來幾年升級只換 CPU 即可<br>
+          • 特色：TSMC 4nm 製程，發熱量極低（65W TDP 風冷輕鬆吹）<br>
+          • 王牌：<strong>R7 9800X3D</strong> 穩坐當代消費級電競遊戲性能冠軍
+        </div>
+        <div class="notice notice-info" style="margin-top:12px; padding:8px 12px;">
+          <span class="notice-icon">✓</span>
+          <span style="font-size:0.84rem;">高階玩家若想戰未來、不想常拆換主機板，AM5 平台升級彈性極大。</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn" onclick="go(-1)">← PREV</button>
+    <div class="dots"></div>
+    <button class="nav-btn" onclick="go(1)">NEXT →</button>
+  </div>
+</div>
+
+<!-- ════ SLIDE 5: 等級用途對照 ════ -->
+<div class="slide" id="s5">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="wiki-dot"></div>
+      <span class="wiki-name">新手自組電腦 / LLMwiki</span>
+      <span class="graph-node-badge">Node: 用途 → 等級 (decides)</span>
+    </div>
+    <span class="slide-counter">05 / 10</span>
+  </div>
+  <div class="content">
+    <div class="tag">Decision Matrix</div>
+    <h2>等級對照 × 用途選購推薦</h2>
+    <div class="card" style="padding:0; overflow:hidden; margin-bottom:12px;">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th style="width:24%;">主要用途需求</th>
+            <th style="width:30%; color:#38bdf8;">Intel 推薦型號</th>
+            <th style="width:30%; color:#f87171;">AMD 推薦型號</th>
+            <th style="width:16%;">建議記憶體</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>文書 / 影音 / 上網</strong></td>
+            <td><span class="badge b-blue">Core i3 / Ultra 5 225</span></td>
+            <td><span class="badge b-red">R5 8500G / 7500F</span></td>
+            <td>16GB DDR5</td>
+          </tr>
+          <tr>
+            <td><strong>主流遊戲 / 2D 平面設計</strong></td>
+            <td><span class="badge b-blue">Ultra 5 245K / i5-14500</span></td>
+            <td><span class="badge b-red">Ryzen 5 9600X</span></td>
+            <td>32GB DDR5</td>
+          </tr>
+          <tr>
+            <td><strong>3D 渲染 / 4K 影片剪輯</strong></td>
+            <td><span class="badge b-blue">Ultra 7 265K (20核)</span></td>
+            <td><span class="badge b-red">Ryzen 7 9700X / 9900X</span></td>
+            <td>32~64GB</td>
+          </tr>
+          <tr>
+            <td><strong>重度工作站 / 批量算圖</strong></td>
+            <td><span class="badge b-blue">Ultra 9 285K (24核)</span></td>
+            <td><span class="badge b-red">Ryzen 9 9950X (16核32緒)</span></td>
+            <td>64GB+</td>
+          </tr>
+          <tr style="background:rgba(168,85,247,0.06);">
+            <td><strong style="color:#c084fc;">🏆 頂級電競特化</strong></td>
+            <td>— (多工生產力導向)</td>
+            <td><span class="badge b-purple">R7 9800X3D / 9850X3D</span></td>
+            <td>32GB 6000MHz</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:0.92rem; color:var(--text-muted);">
+      💡 <strong>選購心法</strong>：預算有限時，遊戲機優先挑「甜品級 CPU（如 7500F/9600X）+ 把錢留給高階顯卡」整體幀數提升最有感！
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn" onclick="go(-1)">← PREV</button>
+    <div class="dots"></div>
+    <button class="nav-btn" onclick="go(1)">NEXT →</button>
+  </div>
+</div>
+
+<!-- ════ SLIDE 6: 關鍵規格解讀 ════ -->
+<div class="slide" id="s6">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="wiki-dot"></div>
+      <span class="wiki-name">新手自組電腦 / LLMwiki</span>
+      <span class="graph-node-badge">Node: 規格參數 (affects)</span>
+    </div>
+    <span class="slide-counter">06 / 10</span>
+  </div>
+  <div class="content">
+    <div class="tag">Technical Spec Decoder</div>
+    <h2>關鍵規格解讀：避開數字陷阱</h2>
+    <div class="grid-4">
+      <div class="card">
+        <div style="font-weight:700; font-size:1.1rem; color:#38bdf8; margin-bottom:4px;">時脈速度 (Clock Speed)</div>
+        <div style="font-size:0.9rem; color:var(--text-muted); line-height:1.6;">
+          • 請看<strong>「最大超頻時脈 (Boost Clock)」</strong>，不要看基準時脈。<br>
+          • 遊戲與多數程式是吃單核瞬態高頻率，數字越高遊戲反應越快。
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-weight:700; font-size:1.1rem; color:#4ade80; margin-bottom:4px;">核心與執行緒數 (Cores)</div>
+        <div style="font-size:0.9rem; color:var(--text-muted); line-height:1.6;">
+          • 核心多有利於多開網頁、實況直播及 3D 渲染多工作業。<br>
+          • 遊戲並非核心越多越好！8 核心的 9800X3D 表現遠超 16 核心舊晶片。
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-weight:700; font-size:1.1rem; color:#c084fc; margin-bottom:4px;">L3 快取記憶體 (Cache)</div>
+        <div style="font-size:0.9rem; color:var(--text-muted); line-height:1.6;">
+          • 專門存放 CPU 隨時存取的數據。快取大可大幅縮短讀取延遲。<br>
+          • AMD X3D 技術堆疊 96MB+ 超大快取，是 FPS 幀率暴增的關鍵本錢。
+        </div>
+      </div>
+      <div class="card">
+        <div style="font-weight:700; font-size:1.1rem; color:#fbbf24; margin-bottom:4px;">TDP 與 NPU 運算單元</div>
+        <div style="font-size:0.9rem; color:var(--text-muted); line-height:1.6;">
+          • <strong>TDP (瓦數)</strong>：代表滿載散熱發熱量，直接決定散熱器與電源規格。<br>
+          • <strong>NPU (AI 算力)</strong>：2026 AI PC 趨勢元件，提供離線語音與影像輔助運算。
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn" onclick="go(-1)">← PREV</button>
+    <div class="dots"></div>
+    <button class="nav-btn" onclick="go(1)">NEXT →</button>
+  </div>
+</div>
+
+<!-- ════ SLIDE 7: 尾碼與型號 ════ -->
+<div class="slide" id="s7">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="wiki-dot"></div>
+      <span class="wiki-name">新手自組電腦 / LLMwiki</span>
+      <span class="graph-node-badge">Node: 尾碼 → 連帶需求 (requires)</span>
+    </div>
+    <span class="slide-counter">07 / 10</span>
+  </div>
+  <div class="content">
+    <div class="tag">Suffix & Model Naming</div>
+    <h2>看懂型號命名與重要尾碼</h2>
+    <div class="grid-2">
+      <div>
+        <div class="spec-box" style="margin-bottom:12px;">
+          <span class="spec-label">INTEL ULTRA 200 命名</span>
+          <span style="color:#38bdf8; font-weight:800; font-size:1.2rem;">Ultra 7</span>
+          <span style="color:var(--text-muted);"> — </span>
+          <span style="color:#60a5fa; font-weight:800; font-size:1.2rem;">2</span>
+          <span style="color:#4ade80; font-weight:800; font-size:1.2rem;">65</span>
+          <span style="color:#fbbf24; font-weight:800; font-size:1.2rem;">K</span>
+          <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">
+            [系列] — [200世代] [性能序號] [超頻尾碼]
+          </div>
+        </div>
+        <div class="spec-box">
+          <span class="spec-label">AMD RYZEN 9000 命名</span>
+          <span style="color:#f87171; font-weight:800; font-size:1.2rem;">Ryzen 7</span>
+          <span style="color:var(--text-muted);"> — </span>
+          <span style="color:#60a5fa; font-weight:800; font-size:1.2rem;">9</span>
+          <span style="color:#4ade80; font-weight:800; font-size:1.2rem;">800</span>
+          <span style="color:#c084fc; font-weight:800; font-size:1.2rem;">X3D</span>
+          <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">
+            [系列] — [9000世代] [性能序號] [大快取尾碼]
+          </div>
+        </div>
+      </div>
+      <div class="card" style="padding:16px 20px;">
+        <div style="font-family:var(--mono); font-size:12px; color:var(--text-muted); margin-bottom:8px;">常見尾碼要求 (REQUIRES CHAIN)</div>
+        <div style="font-size:0.92rem; line-height:2;">
+          <span class="badge b-amber">K 系列</span>：可超頻，<strong>原廠不附風扇</strong>，需搭 Z/X 板與強化散熱<br>
+          <span class="badge b-red">F 系列</span>：<strong>無內建顯示卡</strong>，必須裝獨顯否則無畫面<br>
+          <span class="badge b-purple">X3D 系列</span>：3D V-Cache 遊戲黑科技，最頂級幀率保證<br>
+          <span class="badge b-blue">G 系列</span>：(AMD) 內建高階電競 APU 內顯，文書免顯卡<br>
+        </div>
+        <div class="notice notice-warn" style="margin-top:10px; padding:6px 10px;">
+          <span class="notice-icon">💡</span>
+          <span style="font-size:0.82rem;"><strong>強烈建議</strong>：新手盡量買有內顯版本（非 F 版），日後獨顯故障排查有保險！</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn" onclick="go(-1)">← PREV</button>
+    <div class="dots"></div>
+    <button class="nav-btn" onclick="go(1)">NEXT →</button>
+  </div>
+</div>
+
+<!-- ════ SLIDE 8: 散熱器搭配 ════ -->
+<div class="slide" id="s8">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="wiki-dot"></div>
+      <span class="wiki-name">新手自組電腦 / LLMwiki</span>
+      <span class="graph-node-badge">Node: 等級 → 散熱方案 (decides)</span>
+    </div>
+    <span class="slide-counter">08 / 10</span>
+  </div>
+  <div class="content">
+    <div class="tag">Cooling Solutions</div>
+    <h2>散熱器怎麼挑？風冷 vs 水冷搭配</h2>
+    <div class="card" style="padding:0; overflow:hidden; margin-bottom:14px;">
+      <table class="tbl">
+        <thead>
+          <tr>
+            <th style="width:28%;">處理器發熱等級 (TDP)</th>
+            <th style="width:36%;">推薦散熱器方案</th>
+            <th style="width:36%;">實務選購提醒</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>入門～主流 (≤ 65W)</strong><br><span style="font-size:12px; color:var(--text-muted);">i3 / R5 9600X / 7500F</span></td>
+            <td><span class="badge b-green">原廠風扇 或 單塔風冷 ($600~$900)</span></td>
+            <td>發熱量低，百元單塔即能全速釋放，保養最簡單</td>
+          </tr>
+          <tr>
+            <td><strong>中高階遊戲 (65W～120W)</strong><br><span style="font-size:12px; color:var(--text-muted);">i5-14500 / R7 9700X / 9800X3D</span></td>
+            <td><span class="badge b-blue">雙塔雙風扇風冷 ($1,200~$1,800)</span></td>
+            <td>塔扇噪音低且無漏液風險，9800X3D 用雙塔風冷就很穩</td>
+          </tr>
+          <tr>
+            <td><strong>高階創作者 / K版 (≥ 125W)</strong><br><span style="font-size:12px; color:var(--text-muted);">Ultra 7 265K / Ultra 9 285K</span></td>
+            <td><span class="badge b-purple">240mm / 360mm 一體式水冷</span></td>
+            <td>多核心滿載渲染瓦數飆高，水冷才能壓制不撞牆降頻</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notice notice-warn">
+      <span class="notice-icon">🚨</span>
+      <span><strong>新手特別注意</strong>：安裝散熱器前，<strong>散熱底座的透明塑膠保護膜一定要撕掉！</strong> 沒撕保護膜會導致 CPU 開機數秒內直奔 100°C 撞牆降頻！</span>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn" onclick="go(-1)">← PREV</button>
+    <div class="dots"></div>
+    <button class="nav-btn" onclick="go(1)">NEXT →</button>
+  </div>
+</div>
+
+<!-- ════ SLIDE 9: 新手常見誤解 ════ -->
+<div class="slide" id="s9">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="wiki-dot"></div>
+      <span class="wiki-name">新手自組電腦 / LLMwiki</span>
+      <span class="graph-node-badge">Node: 反例節點 (Mistakes)</span>
+    </div>
+    <span class="slide-counter">09 / 10</span>
+  </div>
+  <div class="content">
+    <div class="tag">Anti-Patterns & Pitfalls</div>
+    <h2>新手最常踩的 5 大認知地雷</h2>
+    <div style="display:flex; flex-direction:column; gap:10px;">
+      <div class="notice notice-warn">
+        <span class="notice-icon">✕</span>
+        <div><strong>誤解 1：只看核心數量，認為核心多遊戲一定順</strong><br>
+        <span style="color:var(--text-muted);">錯！遊戲更看重單核時脈與快取大小。8 核心 9800X3D 遊戲表現遠勝很多 16 核心舊旗艦。</span></div>
+      </div>
+      <div class="notice notice-warn">
+        <span class="notice-icon">✕</span>
+        <div><strong>誤解 2：買 K 版超頻一定能用得更久、CP 值更高</strong><br>
+        <span style="color:var(--text-muted);">錯！極限超頻發熱量大、耗電高且容易衰退老化。主流使用者選原廠標準調校最穩定長壽。</span></div>
+      </div>
+      <div class="notice notice-warn">
+        <span class="notice-icon">✕</span>
+        <div><strong>誤解 3：買 F 版（無內顯）能無痛省大錢</strong><br>
+        <span style="color:var(--text-muted);">只省幾百元，但若獨顯故障時無法開機排查，且 Intel 內顯的 Quick Sync 轉檔加速功能也會喪失。</span></div>
+      </div>
+      <div class="notice notice-warn">
+        <span class="notice-icon">✕</span>
+        <div><strong>誤解 4：CPU 買到頂級電腦就不會被時代淘汰</strong><br>
+        <span style="color:var(--text-muted);">軟體生態不斷疊代，5 年後哪怕 CPU 沒壞，新架構與新周邊技術也已全面翻新。依預算買夠用即可。</span></div>
+      </div>
+      <div class="notice notice-warn">
+        <span class="notice-icon">✕</span>
+        <div><strong>誤解 5：忽略記憶體通道配置</strong><br>
+        <span style="color:var(--text-muted);">一定要組「雙通道（如 16GBx2）」！單條記憶體會讓 CPU 與內顯效能大幅縮水 15%~30%。</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn" onclick="go(-1)">← PREV</button>
+    <div class="dots"></div>
+    <button class="nav-btn" onclick="go(1)">NEXT →</button>
+  </div>
+</div>
+
+<!-- ════ SLIDE 10: 總結 ════ -->
+<div class="slide" id="s10">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="wiki-dot"></div>
+      <span class="wiki-name">新手自組電腦 / LLMwiki</span>
+      <span class="graph-node-badge">Node: 決策收斂 (Graph Closed)</span>
+    </div>
+    <span class="slide-counter">10 / 10</span>
+  </div>
+  <div class="content">
+    <div class="tag">Executive Summary</div>
+    <h2>新手挑選 CPU 的三步金律</h2>
+    <div class="grid-3" style="gap:16px; margin-bottom:18px;">
+      <div class="card" style="text-align:center; padding:24px 18px;">
+        <div style="font-family:var(--mono); font-size:2rem; color:var(--accent); font-weight:800; margin-bottom:6px;">01</div>
+        <div style="font-weight:700; font-size:1.1rem; margin-bottom:8px; color:#fff;">確認主攻用途</div>
+        <div style="font-size:0.88rem; color:var(--text-muted); line-height:1.65;">
+          • 純文書 → i3 / R5 8500G<br>
+          • 遊戲機 → R5 9600X / 9800X3D<br>
+          • 剪片轉檔 → Ultra 7 265K
+        </div>
+      </div>
+      <div class="card" style="text-align:center; padding:24px 18px;">
+        <div style="font-family:var(--mono); font-size:2rem; color:var(--accent); font-weight:800; margin-bottom:6px;">02</div>
+        <div style="font-weight:700; font-size:1.1rem; margin-bottom:8px; color:#fff;">核對主機板腳位</div>
+        <div style="font-size:0.88rem; color:var(--text-muted); line-height:1.65;">
+          • Intel Ultra 200 → <strong>LGA1851</strong><br>
+          • AMD 9000 → <strong>AM5</strong><br>
+          • 優先挑配備 2 個 M.2 散熱片底板
+        </div>
+      </div>
+      <div class="card" style="text-align:center; padding:24px 18px;">
+        <div style="font-family:var(--mono); font-size:2rem; color:var(--accent); font-weight:800; margin-bottom:6px;">03</div>
+        <div style="font-weight:700; font-size:1.1rem; margin-bottom:8px; color:#fff;">配置合理散熱與電供</div>
+        <div style="font-size:0.88rem; color:var(--text-muted); line-height:1.65;">
+          • 65W CPU → 百元塔扇<br>
+          • 120W+ 旗艦 → 雙塔或水冷<br>
+          • 電源瓦數預留 1.3 倍餘裕
+        </div>
+      </div>
+    </div>
+    <div class="card card-hi" style="text-align:center; padding:18px;">
+      <div style="font-size:1.15rem; font-weight:700; color:#fff;">
+        「寧可效能過剩，也不要效能不足。電腦是你在用的，選對定位不花冤枉錢！」
+      </div>
+    </div>
+    <div style="font-family:var(--mono); font-size:12px; color:var(--text-dim); margin-top:14px; text-align:right;">
+      新手自組電腦 Wiki 專案 ｜ 資料來源：Intel 官網、歐飛先生、香港01、玩樂分期、mybest 編輯評測
+    </div>
+  </div>
+  <div class="nav">
+    <button class="nav-btn" onclick="go(-1)">← PREV</button>
+    <div class="dots"></div>
+    <button class="nav-btn" disabled>COMPLETED ✓</button>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<script>
+const TOTAL = 10;
+let cur = 1, animating = false;
+
+function go(dir) {
+  if (animating) return;
+  const next = cur + dir;
+  if (next < 1 || next > TOTAL) return;
+
+  animating = true;
+  const curEl = document.getElementById('s' + cur);
+  const nextEl = document.getElementById('s' + next);
+
+  curEl.classList.add('exit');
+  setTimeout(() => {
+    curEl.classList.remove('active', 'exit');
+    cur = next;
+    nextEl.classList.add('active');
+    updateAll();
+    setTimeout(() => { animating = false; }, 360);
+  }, 200);
+}
+
+function updateAll() {
+  document.getElementById('pbar').style.width = (cur / TOTAL * 100) + '%';
+  document.querySelectorAll('.dots').forEach(c => {
+    c.innerHTML = '';
+    for (let i = 1; i <= TOTAL; i++) {
+      const d = document.createElement('div');
+      d.className = 'dot' + (i === cur ? ' active' : '');
+      d.onclick = (idx => () => { if (!animating) go(idx - cur); })(i);
+      c.appendChild(d);
+    }
+  });
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') { e.preventDefault(); go(1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')                    { e.preventDefault(); go(-1); }
+});
+
+let tx = 0;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; });
+document.addEventListener('touchend',   e => {
+  const dx = e.changedTouches[0].clientX - tx;
+  if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+});
+
+updateAll();
+</script>
+</body>
+</html>
